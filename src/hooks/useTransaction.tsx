@@ -27,20 +27,21 @@ const useTransaction = ({ user }: Props) => {
 	});
 
 	const payTransaction = async () => {
-		if (!data && !user) {
+		// Pastikan semua data yang diperlukan tersedia
+		if (!user || !data || !data.flightDetail || !data.seatDetail) {
 			return null;
 		}
 
-		const totalPrice = Number((data?.flightDetail?.price ?? 0) + selectedSeat.additionalPrice);
+		const totalPrice = Number((data.flightDetail.price ?? 0) + selectedSeat.additionalPrice);
 
 		const bodyData = {
 			bookingDate: new Date(),
-			customerId: user?.id,
-			flightId: data?.flightDetail?.id,
+			customerId: user.id,
+			flightId: data.flightDetail.id,
 			price: totalPrice,
-			seatId: data?.seatDetail?.id,
-			departureCityCode: data?.flightDetail?.departureCityCode,
-			destinationCityCode: data?.flightDetail?.destinationCityCode,
+			seatId: data.seatDetail.id,
+			departureCityCode: data.flightDetail.departureCityCode,
+			destinationCityCode: data.flightDetail.destinationCityCode,
 		};
 
 		try {
